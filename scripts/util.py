@@ -1,4 +1,5 @@
 from brownie import network, accounts, config
+import eth_utils
 
 
 NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["hardhat", "development", "ganache"]
@@ -18,3 +19,10 @@ def get_account(number=None):
         account = accounts.add(config["wallets"]["from_key"])
         return account
     return None
+
+
+def encode_function_data(initializer=None, *args):
+    if len(args) == 0 or not initializer:
+        eth_utils.to_bytes(hexstr="0x")
+
+    return initializer.encode_input(*args)
