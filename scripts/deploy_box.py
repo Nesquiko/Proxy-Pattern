@@ -8,9 +8,12 @@ def deploy_box():
     print(f"Deploying to {network.show_active()}.")
     print(f"With account {account}.")
 
-    box = Box.deploy({"from": account})
+    box = Box.deploy(
+        {"from": account},
+        publish_source=True,
+    )
 
-    proxy_admin = ProxyAdmin.deploy({"from": account})
+    proxy_admin = ProxyAdmin.deploy({"from": account}, publish_source=True)
 
     initializer = box.store, 843
     box_encoded_initializer_function = encode_function_data(*initializer)
@@ -20,6 +23,7 @@ def deploy_box():
         proxy_admin.address,
         box_encoded_initializer_function,
         {"from": account, "gas_limit": 1000000},
+        publish_source=True,
     )
 
     print(f"Proxy was deployed at {proxy}, contract is now upgreadable!")

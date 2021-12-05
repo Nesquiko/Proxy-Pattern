@@ -5,7 +5,7 @@ from scripts.util import get_account, upgrade, encode_function_data
 
 def upgrade_box():
     account = get_account()
-    box_v2: ProjectContract = BoxV2.deploy({"from": account})
+    box_v2: ProjectContract = BoxV2.deploy({"from": account}, publish_source=True)
 
     proxy: ProjectContract = TransparentUpgradeableProxy[-1]
     proxy_admin: ProjectContract = ProxyAdmin[-1]
@@ -27,3 +27,7 @@ def upgrade_box():
     print(
         f"UPDATED - Retrieving value from box proxy, value is {proxy_box.retrieve()}."
     )
+
+
+def main():
+    upgrade_box()
