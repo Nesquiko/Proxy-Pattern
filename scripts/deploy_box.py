@@ -3,7 +3,7 @@ from scripts.util import get_account, encode_function_data
 from brownie import network, Box, ProxyAdmin, TransparentUpgradeableProxy, project
 
 
-def main():
+def deploy_box():
     account = get_account()
     print(f"Deploying to {network.show_active()}.")
     print(f"With account {account}.")

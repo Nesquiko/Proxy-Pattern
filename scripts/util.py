@@ -32,35 +32,32 @@ def encode_function_data(initializer=None, *args):
 
 def upgrade(
     account,
-    proxy: ProjectContract,
-    new_impl_address: ProjectContract,
-    proxy_admin=None,
+    proxy,
+    newimplementation_address,
+    proxy_admin_contract=None,
     initializer=None,
     *args
 ):
-    tx = None
-
-    if proxy_admin:
+    transaction = None
+    if proxy_admin_contract:
         if initializer:
             encoded_function_call = encode_function_data(initializer, *args)
-            tx = proxy_admin.upgradeAndCall(
+            transaction = proxy_admin_contract.upgradeAndCall(
                 proxy.address,
-                new_impl_address.address,
+                newimplementation_address,
                 encoded_function_call,
                 {"from": account},
             )
         else:
-            tx = proxy_admin.upgrade(
-                proxy.address, new_impl_address.address, {"from": account}
+            transaction = proxy_admin_contract.upgrade(
+                proxy.address, newimplementation_address, {"from": account}
             )
-
     else:
         if initializer:
             encoded_function_call = encode_function_data(initializer, *args)
-            tx = proxy_admin.upgradeToAndCall(
-                new_impl_address.address, encoded_function_call, {"from": account}
+            transaction = proxy.upgradeToAndCall(
+                newimplementation_address, encoded_function_call, {"from": account}
             )
         else:
-            tx = proxy.upgradeTo(new_impl_address.address, {"from": account})
-
-    return tx
+            transaction = proxy.upgradeTo(newimplementation_address, {"from": account})
+    return transaction
